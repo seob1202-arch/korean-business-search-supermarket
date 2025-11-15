@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="전 세계 한인 업체 검색 - 국가, 도시, 업종별로 한인 업체를 쉽게 찾아보세요">
-    <meta name="keywords" content="한인 업체, 해외 한인, 한식당, 한인 커뮤니티">
     <title>한인 업체 검색 - 전 세계 한인 비즈니스 디렉토리</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
     
     <style>
-        /* ========== CSS 리셋 및 기본 스타일 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -22,593 +19,733 @@
         }
         
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --primary-color: #667eea;
-            --secondary-color: #764ba2;
-            --text-dark: #2d3748;
-            --text-light: #718096;
-            --border-color: #e2e8f0;
-            --bg-gray: #f7fafc;
-            --white: #ffffff;
-            --yellow-star: #fbbf24;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
-            --transition: all 0.3s ease;
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --primary-light: #818CF8;
+            --accent: #EC4899;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-tertiary: #94A3B8;
+            
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --bg-tertiary: #F1F5F9;
+            
+            --border: #E2E8F0;
+            --shadow-color: 226 232 240;
+            
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-2xl: 2rem;
+            --radius-full: 9999px;
+            
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        html {
+            scroll-behavior: smooth;
         }
         
         body {
-            font-family: "Inter", "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+            font-family: "Pretendard Variable", "Inter", -apple-system, sans-serif;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
             line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--bg-gray);
-            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
-            text-rendering: optimizeLegibility;
+            overflow-x: hidden;
         }
         
-        /* 숫자 최적화 */
-        .rating-value,
-        .rating-count,
-        .selected-badge,
-        .distance-badge,
-        .page-btn {
-            font-variant-numeric: tabular-nums;
-            font-feature-settings: "tnum" 1, "kern" 1;
-        }
-        
-        /* ========== 접근성 - 스킵 링크 ========== */
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: var(--primary-color);
-            color: white;
-            padding: 8px 16px;
-            text-decoration: none;
-            z-index: 100;
-        }
-        
-        .skip-link:focus {
-            top: 0;
-        }
-        
-        /* ========== 포커스 스타일 ========== */
-        *:focus-visible {
-            outline: 2px solid var(--primary-color);
-            outline-offset: 2px;
-        }
-        
-        /* ========== 헤더 ========== */
-        .header {
-            background: var(--primary-gradient);
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-            box-shadow: var(--shadow-md);
+        /* ========== Hero Header ========== */
+        .hero {
             position: relative;
-            overflow: visible;
+            min-height: 55vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            animation: gradient 15s ease infinite;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .header h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(255,255,255);stop-opacity:0.1" /><stop offset="100%" style="stop-color:rgb(255,255,255);stop-opacity:0" /></linearGradient></defs><circle cx="100" cy="100" r="80" fill="url(%23grad)"/><circle cx="1000" cy="150" r="100" fill="url(%23grad)"/><circle cx="300" cy="400" r="60" fill="url(%23grad)"/><circle cx="900" cy="450" r="90" fill="url(%23grad)"/><circle cx="600" cy="200" r="70" fill="url(%23grad)"/></svg>');
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 900px;
+            animation: fadeInUp 1s var(--transition);
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-full);
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            animation: scaleIn 0.6s var(--transition) 0.2s both;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s var(--transition) 0.3s both;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.125rem, 3vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s var(--transition) 0.4s both;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s var(--transition) 0.5s both;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
             margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+        
+        .hero-wave {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 5;
+        }
+        
+        /* ========== Container ========== */
+        .container {
+            max-width: 1400px;
+            margin: -60px auto 0;
+            padding: 0 1.5rem 4rem;
+            position: relative;
+            z-index: 20;
+        }
+        
+        /* ========== Search Card ========== */
+        .search-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-2xl);
+            padding: 2.5rem;
+            box-shadow: 
+                0 0 0 1px rgba(0, 0, 0, 0.02),
+                0 16px 32px -8px rgba(var(--shadow-color), 0.12),
+                0 8px 16px -4px rgba(var(--shadow-color), 0.08);
+            margin-bottom: 2.5rem;
+            animation: scaleIn 0.6s var(--transition);
+        }
+        
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .search-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .search-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
             letter-spacing: -0.02em;
         }
         
-        .header p {
-            font-size: 1rem;
-            opacity: 0.95;
-            font-weight: 400;
-            letter-spacing: -0.01em;
-        }
-        
-        /* ========== 컨테이너 ========== */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1.5rem 1rem 3rem;
-            overflow: visible;
-        }
-        
-        /* ========== 필터 컨트롤 ========== */
-        .controls {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 2rem;
-            overflow: visible;
-        }
-        
-        .search-box {
+        .search-input-group {
             position: relative;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
         }
         
-        .search-box input {
+        .search-input {
             width: 100%;
-            padding: 0.875rem 1rem 0.875rem 3rem;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 1.25rem 1.5rem 1.25rem 4rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-full);
+            font-size: 1.125rem;
             font-family: inherit;
-            transition: var(--transition);
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23718096" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>');
-            background-repeat: no-repeat;
-            background-position: 1rem center;
-        }
-        
-        .search-box input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-        
-        .dropdowns {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .dropdown-group label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark);
-            letter-spacing: -0.01em;
-        }
-        
-        .dropdown-group select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: inherit;
-            cursor: pointer;
-            transition: var(--transition);
-            background-color: var(--white);
-        }
-        
-        .dropdown-group select:disabled {
-            background-color: var(--bg-gray);
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        
-        .dropdown-group select:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-        
-        /* ========== 업종 필터 칩 ========== */
-        .category-label {
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text-dark);
-            display: block;
-        }
-        
-        .category-chips {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            padding: 0.5rem 0;
-            margin-bottom: 1rem;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary-color) var(--border-color);
-        }
-        
-        .category-chips::-webkit-scrollbar {
-            height: 6px;
-        }
-        
-        .category-chips::-webkit-scrollbar-track {
-            background: var(--border-color);
-            border-radius: 3px;
-        }
-        
-        .category-chips::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 3px;
-        }
-        
-        .chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.5rem 1rem;
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            background: var(--white);
-            cursor: pointer;
-            white-space: nowrap;
-            font-size: 0.875rem;
             font-weight: 500;
+            background: var(--bg-secondary);
+            transition: all 0.3s var(--transition);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+        
+        .search-input-icon {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            color: var(--text-tertiary);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .filter-label {
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .filter-select {
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
             font-family: inherit;
-            transition: var(--transition);
+            font-weight: 600;
+            background: var(--bg-secondary);
+            cursor: pointer;
+            transition: all 0.3s var(--transition);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 20px;
+            padding-right: 3rem;
+        }
+        
+        .filter-select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--bg-primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+        
+        .category-title {
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .category-list {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .category-chip {
+            padding: 0.625rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-full);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s var(--transition);
             user-select: none;
         }
         
-        .chip:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-1px);
+        .category-chip:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
         }
         
-        .chip[aria-checked="true"] {
-            background: var(--primary-gradient);
+        .category-chip[aria-checked="true"] {
+            background: var(--primary);
             color: white;
-            border-color: transparent;
+            border-color: var(--primary);
         }
         
-        .chip.all-chip {
-            background: var(--primary-gradient);
+        .category-chip.all {
+            background: var(--text-primary);
             color: white;
-            border-color: transparent;
-            font-weight: 600;
+            border-color: var(--text-primary);
         }
         
-        .chip.all-chip[aria-checked="false"] {
-            background: var(--white);
-            color: var(--text-dark);
-            border-color: var(--border-color);
+        .category-chip.all[aria-checked="false"] {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-color: var(--border);
         }
         
-        .chip-check {
-            display: none;
-            font-size: 0.75rem;
-        }
-        
-        .chip[aria-checked="true"] .chip-check {
-            display: inline;
-        }
-        
-        /* ========== 뷰 토글 및 결과 헤더 ========== */
-        .results-header {
+        /* ========== Results Bar ========== */
+        .results-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            gap: 1.5rem;
             flex-wrap: wrap;
+        }
+        
+        .results-info {
+            display: flex;
+            align-items: center;
             gap: 1rem;
         }
         
-        .result-count {
-            font-size: 1rem;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .results-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
         }
         
-        .selected-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 24px;
-            height: 24px;
-            padding: 0 0.5rem;
-            background: var(--primary-gradient);
+        .results-text strong {
+            color: var(--primary);
+        }
+        
+        .filter-count {
+            padding: 0.375rem 1rem;
+            background: var(--primary);
             color: white;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
             font-weight: 700;
-            animation: pulse 0.6s ease;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            animation: scaleIn 0.3s var(--transition);
         }
         
         .view-toggle {
             display: flex;
             gap: 0.5rem;
-            background: var(--bg-gray);
-            padding: 0.25rem;
-            border-radius: 8px;
+            background: var(--bg-tertiary);
+            padding: 0.375rem;
+            border-radius: var(--radius-lg);
         }
         
         .view-btn {
-            padding: 0.5rem 1rem;
+            padding: 0.625rem 1.25rem;
             border: none;
             background: transparent;
-            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            font-weight: 700;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 600;
-            font-family: inherit;
-            color: var(--text-light);
-            transition: var(--transition);
+            transition: all 0.2s var(--transition);
         }
         
         .view-btn[aria-pressed="true"] {
-            background: var(--white);
-            color: var(--primary-color);
-            box-shadow: var(--shadow-sm);
+            background: var(--bg-primary);
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(var(--shadow-color), 0.1);
         }
         
-        .view-btn:hover {
-            color: var(--primary-color);
+        /* ========== Card Grid ========== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 2rem;
+            perspective: 1500px;
         }
         
-        /* ========== 로딩 상태 ========== */
-        .loading-state {
+        .business-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.4s var(--transition), 
+                        box-shadow 0.4s var(--transition), 
+                        border-color 0.4s var(--transition);
+            animation: fadeInUp 0.5s var(--transition) both;
+        }
+        
+        .business-card:hover {
+            transform: perspective(1500px) translateY(-10px) rotateX(3deg) scale(1.02);
+            box-shadow: 
+                0 0 0 1px rgba(99, 102, 241, 0.5),
+                0 30px 60px -15px rgba(var(--shadow-color), 0.2),
+                0 15px 30px -10px rgba(var(--shadow-color), 0.1);
+            border-color: var(--primary-light);
+        }
+        
+        .card-image-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+        }
+        
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--transition);
+        }
+        
+        .business-card:hover .card-image {
+            transform: scale(1.08);
+        }
+        
+        .card-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .badge-star {
+            color: #FFB800;
+            font-size: 1rem;
+        }
+        
+        .badge-rating {
+            font-weight: 900;
+            color: var(--text-primary);
+        }
+        
+        .badge-reviews {
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.375rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.875rem;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+        }
+        
+        .card-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.875rem;
+        }
+        
+        .tag {
+            padding: 0.375rem 0.875rem;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            font-size: 0.8125rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.65;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .card-distance {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+            color: var(--primary);
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .icon {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .card-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 2px solid var(--bg-tertiary);
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+        
+        .detail-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            color: var(--primary);
+            margin-top: 3px;
+        }
+        
+        .detail-text {
+            flex: 1;
+        }
+        
+        /* ========================================
+           모바일 버튼 레이아웃 수정 지점 (1)
+        ======================================== */
+        .card-actions {
+            display: flex; /* grid -> flex 변경 */
+            /* grid-template-columns: repeat(4, 1fr); 제거 */
+            gap: 0.625rem;
+        }
+        
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+            padding: 0.875rem 0.375rem;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s var(--transition);
+            font-weight: 700;
+            min-height: 80px;
+            
+            flex: 1; /* 자식 요소가 꽉 차도록 flex: 1 추가 */
+        }
+        /* ========================================
+           (수정 완료)
+        ======================================== */
+        
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+        
+        .action-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+        
+        .action-label {
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
             text-align: center;
-            padding: 3rem 1rem;
         }
         
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid var(--border-color);
-            border-top-color: var(--primary-color);
+        /* ========== Loading ========== */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5rem 2rem;
+            gap: 2rem;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--bg-tertiary);
+            border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin: 0 auto 1rem;
         }
         
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
         
-        /* ========== 에러 상태 ========== */
+        .loading-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        
+        /* ========== Empty/Error States ========== */
+        .empty-state,
         .error-state {
-            background: #fff5f5;
-            border: 2px solid #fc8181;
-            border-radius: 12px;
-            padding: 2rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius-2xl);
+            padding: 4rem 2rem;
             text-align: center;
-            margin: 2rem 0;
+            border: 2px dashed var(--border);
         }
         
-        .error-icon {
-            font-size: 3rem;
+        .state-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .state-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text-primary);
             margin-bottom: 1rem;
-        }
-        
-        .error-message {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #c53030;
-            margin-bottom: 0.5rem;
-        }
-        
-        .error-details {
-            color: #742a2a;
-            font-size: 0.875rem;
-        }
-        
-        /* ========== 빈 상태 ========== */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-light);
-        }
-        
-        .empty-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-        
-        .empty-message {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .empty-hint {
-            font-size: 0.875rem;
-        }
-        
-        /* ========== 평점 스타일 ========== */
-        .rating {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            margin-bottom: 0.75rem;
-        }
-        
-        .rating-stars {
-            display: flex;
-            align-items: center;
-            gap: 0.125rem;
-            color: var(--yellow-star);
-            font-size: 1rem;
-        }
-        
-        .rating-value {
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        
-        .rating-count {
-            color: var(--text-light);
-            font-size: 0.8125rem;
-        }
-        
-        .distance-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            padding: 0.25rem 0.625rem;
-            background: var(--bg-gray);
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-        
-        /* ========== 카드 뷰 ========== */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            overflow: visible;
-        }
-        
-        .business-card {
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-            overflow: visible;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .business-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        /* ========== 이미지 최적화 개선 ========== */
-        .card-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: var(--bg-gray);
-            border-radius: 12px 12px 0 0;
-            /* 이미지가 로드될 때까지 부드러운 전환 */
-            transition: opacity 0.3s ease;
-        }
-        
-        /* 로딩 중 skeleton 애니메이션 */
-        .card-image[data-src]:not([src]),
-        .card-image.lazy-loading {
-            background: linear-gradient(
-                90deg,
-                var(--bg-gray) 0%,
-                #e2e8f0 20%,
-                var(--bg-gray) 40%,
-                var(--bg-gray) 100%
-            );
-            background-size: 200% 100%;
-            animation: shimmer 1.5s ease-in-out infinite;
-            opacity: 0.7;
-        }
-        
-        /* 이미지 로드 완료 시 */
-        .card-image.loaded {
-            opacity: 1;
-            animation: none;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        
-        .card-content {
-            padding: 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: visible;
-        }
-        
-        .card-content h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark);
             letter-spacing: -0.02em;
         }
         
-        .card-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.375rem;
-            margin-bottom: 0.75rem;
+        .state-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
         }
         
-        .tag {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: var(--primary-gradient);
-            color: white;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
+        .error-state {
+            background: #FEF2F2;
+            border-color: #FCA5A5;
         }
         
-        .card-feature {
-            font-style: italic;
-            color: var(--text-light);
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-            line-height: 1.5;
+        .error-state .state-title {
+            color: var(--error);
         }
         
-        .card-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-            color: var(--text-dark);
-        }
-        
-        .info-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-        }
-        
-        .info-icon {
-            min-width: 16px;
-            margin-top: 2px;
-        }
-        
-        .card-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .action-btn {
-            flex-grow: 1;
-            min-width: 80px;
-            padding: 0.625rem 1rem;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--white);
-            cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 600;
-            font-family: inherit;
-            text-decoration: none;
-            color: var(--text-dark);
-            text-align: center;
-            transition: var(--transition);
-            display: inline-block;
-            letter-spacing: -0.01em;
-        }
-        
-        .action-btn:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            transform: scale(1.05);
-        }
-        
-        /* ========== 테이블 뷰 ========== */
+        /* ========== Table View ========== */
         .table-container {
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(var(--shadow-color), 0.08);
         }
         
         .business-table {
@@ -617,227 +754,264 @@
         }
         
         .business-table thead {
-            background: var(--bg-gray);
+            background: var(--bg-tertiary);
         }
         
         .business-table th {
-            padding: 1rem;
+            padding: 1.25rem 1.5rem;
             text-align: left;
-            font-weight: 700;
-            font-size: 0.875rem;
-            color: var(--text-dark);
-            border-bottom: 2px solid var(--border-color);
-            white-space: nowrap;
+            font-weight: 800;
+            font-size: 0.8125rem;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid var(--border);
         }
         
         .business-table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.875rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9375rem;
+        }
+        
+        .business-table tbody tr {
+            transition: background 0.2s var(--transition);
         }
         
         .business-table tbody tr:hover {
-            background: var(--bg-gray);
+            background: var(--bg-secondary);
         }
         
         .table-image {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             object-fit: cover;
-            border-radius: 8px;
-            transition: opacity 0.3s ease;
+            border-radius: var(--radius-md);
+            box-shadow: 0 2px 8px rgba(var(--shadow-color), 0.1);
         }
         
-        .table-image[data-src]:not([src]),
-        .table-image.lazy-loading {
-            background: linear-gradient(90deg, var(--bg-gray) 0%, #e2e8f0 50%, var(--bg-gray) 100%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            opacity: 0.7;
+        .table-name {
+            font-weight: 800;
+            color: var(--text-primary);
+            font-size: 1rem;
         }
         
-        .table-image.loaded {
-            opacity: 1;
-            animation: none;
-        }
-        
-        .table-tags {
+        .table-rating {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.25rem;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .table-actions {
             display: flex;
-            gap: 0.375rem;
-            flex-wrap: nowrap;
+            gap: 0.5rem;
         }
         
         .table-action-btn {
-            padding: 0.375rem 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--white);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            font-size: 0.75rem;
-            font-family: inherit;
             text-decoration: none;
-            color: var(--text-dark);
-            transition: var(--transition);
-            white-space: nowrap;
+            color: var(--text-primary);
+            transition: all 0.2s var(--transition);
         }
         
         .table-action-btn:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
         
-        /* ========== 페이지네이션 ========== */
-        .pagination-wrapper {
-            margin-top: 2rem;
-            padding-bottom: 2rem;
-            overflow: visible;
+        /* ========== Pagination ========== */
+        .pagination-section {
+            margin-top: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
         }
         
-        .items-per-page {
+        .items-selector {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
+            gap: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
         }
         
-        .items-per-page select {
-            padding: 0.5rem 2rem 0.5rem 0.75rem;
-            border: 2px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.875rem;
+        .items-select {
+            padding: 0.625rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
             font-family: inherit;
+            font-weight: 700;
+            background: var(--bg-primary);
             cursor: pointer;
-            background-color: var(--white);
         }
         
         .pagination {
             display: flex;
-            justify-content: center;
-            align-items: center;
             gap: 0.5rem;
-            flex-wrap: wrap;
-            overflow: visible;
+            align-items: center;
         }
         
         .page-btn {
-            min-width: 40px;
-            height: 40px;
-            padding: 0.5rem 0.75rem;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--white);
+            min-width: 48px;
+            height: 48px;
+            padding: 0 1rem;
+            border: 2px solid var(--border);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-weight: 700;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 600;
-            font-family: inherit;
-            color: var(--text-dark);
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .page-btn:hover:not(:disabled) {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+            transition: all 0.2s var(--transition);
         }
         
         .page-btn:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
         }
         
+        .page-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
         .page-btn[aria-current="page"] {
-            background: var(--primary-gradient);
+            background: var(--primary);
             color: white;
-            border-color: transparent;
+            border-color: var(--primary);
         }
         
         .page-ellipsis {
-            padding: 0.5rem;
-            color: var(--text-light);
+            padding: 0 0.5rem;
+            color: var(--text-tertiary);
         }
         
-        /* ========== 위치 알림 ========== */
+        /* ========== Location Notice ========== */
         .location-notice {
-            background: #edf2f7;
-            border: 2px solid #cbd5e0;
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-            color: var(--text-dark);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: #EFF6FF;
+            border: 2px solid #BFDBFE;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            color: #1E40AF;
+        }
+
+        .location-notice-text {
+            flex: 1;
+            font-weight: 600;
+            padding-right: 1rem;
         }
         
         .location-notice.success {
-            background: #f0fdf4;
-            border-color: #86efac;
+            background: #F0FDF4;
+            border-color: #86EFAC;
             color: #166534;
         }
         
         .location-notice.error {
-            background: #fef2f2;
-            border-color: #fca5a5;
-            color: #991b1b;
-        }
-        
-        .location-notice.info {
-            background: #eff6ff;
-            border-color: #93c5fd;
-            color: #1e40af;
+            background: #FEF2F2;
+            border-color: #FCA5A5;
+            color: #991B1B;
         }
         
         .location-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             flex-shrink: 0;
+            margin-left: auto;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s var(--transition);
         }
         
         .location-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
         
-        .location-btn:active {
-            transform: scale(0.98);
+        /* ========== Responsive ========== */
+        @media (max-width: 1024px) {
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
         }
         
-        /* ========== 반응형 디자인 ========== */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.5rem;
-                letter-spacing: -0.02em;
+            .hero {
+                min-height: auto; 
+                padding: 5rem 0 8rem 0; 
             }
             
-            .header p {
-                font-size: 0.875rem;
-                letter-spacing: -0.01em;
+            .hero-content {
+                padding: 0 1.5rem; 
+            }
+
+            .hero-badge {
+                margin-bottom: 1.5rem;
+            }
+
+            .hero h1 {
+                margin-bottom: 1rem;
+            }
+
+            .hero-subtitle {
+                margin-bottom: 2.5rem;
             }
             
-            .dropdowns {
+            .hero-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+                width: 100%;
+                padding: 0 1rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .stat-label {
+                font-size: 0.8125rem; 
+                display: block;
+            }
+            
+            .search-card {
+                padding: 1.5rem;
+            }
+            
+            .filters-grid {
                 grid-template-columns: 1fr;
             }
             
             .card-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
             
-            .results-header {
+            .results-bar {
                 flex-direction: column;
                 align-items: flex-start;
             }
-        }
-        
-        @media (max-width: 480px) {
+            
             .view-toggle {
                 display: none;
             }
@@ -846,142 +1020,206 @@
                 display: none;
             }
             
-            .action-btn {
-                flex: 0 0 calc(50% - 0.25rem);
-                min-width: 0;
-            }
-        }
-        
-        /* ========== 인쇄 스타일 ========== */
-        @media print {
-            body {
-                background: white;
-            }
-            
-            .controls,
-            .view-toggle,
-            .pagination-wrapper,
-            .skip-link,
-            .location-notice {
-                display: none !importan
-            }
-            
-            .header {
-                background: none;
-                color: black;
-                border-bottom: 2px solid black;
-            }
-            
-            .business-card {
-                break-inside: avoid;
-                page-break-inside: avoid;
-                box-shadow: none;
-                border: 1px solid #ddd;
-                margin-bottom: 1rem;
-            }
-            
+            /* ========================================
+               모바일 버튼 레이아웃 수정 지점 (2)
+            ======================================== */
             .card-actions {
-                display: none;
+                /* grid-template-columns: repeat(2, 1fr); 제거 */
+                /* flex로 변경된 기본 스타일을 따름 */
+                gap: 0.75rem;
+            }
+            /* ========================================
+               (수정 완료)
+            ======================================== */
+            
+            .action-btn {
+                min-height: 70px;
+                /* flex: 1; 은 기본 스타일에서 상속받음 */
+            }
+
+            .location-notice {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.25rem;
+                padding: 1.5rem;
+            }
+
+            .location-notice-text {
+                padding-right: 0;
+                line-height: 1.5;
+            }
+
+            .location-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 1rem;
+                font-size: 1rem;
+                margin-left: 0;
             }
         }
         
-        /* ========== 숨김 클래스 ========== */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero {
+                 padding-top: 4rem;
+            }
+            
+            .stat-number {
+                font-size: 1.875rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
+            .search-input {
+                padding: 1rem 1rem 1rem 3.5rem;
+                font-size: 1rem;
+            }
+        }
+        
+        /* ========== Utilities ========== */
         .hidden {
             display: none !important;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
         }
     </style>
 </head>
 <body>
-    <a href="#main-content" class="skip-link">본문으로 바로가기</a>
+    <a href="#main" class="sr-only">본문으로 바로가기</a>
     
-    <header class="header">
-        <h1>🌏 전 세계 한인 업체 검색</h1>
-        <p>국가, 도시, 업종별로 한인 업체를 쉽게 찾아보세요</p>
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                </svg>
+                전 세계 어디서나
+            </div>
+            <h1>🌏 한인 업체 검색</h1>
+            <p class="hero-subtitle">국가, 도시, 업종별로 쉽게 찾아보세요</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="total-businesses">-</span>
+                    <span class="stat-label">등록 업체</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="total-countries">-</span>
+                    <span class="stat-label">국가</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="total-cities">-</span>
+                    <span class="stat-label">도시</span>
+                </div>
+            </div>
+        </div>
+        <svg class="hero-wave" viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0,40L80,42C160,44,320,48,480,48C640,48,800,44,960,42C1120,40,1280,40,1360,40L1440,40L1440,80L1360,80C1280,80,1120,80,960,80C800,80,640,80,480,80C320,80,160,80,80,80L0,80Z" fill="#F8FAFC"/>
+        </svg>
     </header>
     
-    <main class="container" id="main-content" role="main">
-        <section class="controls" role="search" aria-label="검색 필터">
-            <div id="location-notice" class="location-notice hidden" role="status" aria-live="polite"></div>
+    <main class="container" id="main">
+        <section class="search-card">
+            <div id="location-notice" class="location-notice hidden"></div>
             
-            <div class="search-box">
-                <label for="search-input" class="sr-only">업체 검색</label>
+            <div class="search-header">
+                <div class="search-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                </div>
+                <h2 class="search-title">업체 검색</h2>
+            </div>
+            
+            <div class="search-input-group">
+                <svg class="search-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
                 <input 
                     type="text" 
                     id="search-input" 
-                    placeholder="업체명, 주소, 특징으로 검색..." 
-                    aria-label="업체명, 주소, 특징으로 검색"
+                    class="search-input"
+                    placeholder="업체명, 주소, 특징으로 검색..."
                     autocomplete="off"
                 />
             </div>
             
-            <div class="dropdowns">
-                <div class="dropdown-group">
-                    <label for="country-select">국가</label>
-                    <select id="country-select" aria-label="국가 선택">
+            <div class="filters-grid">
+                <div class="filter-item">
+                    <label for="country-select" class="filter-label">국가</label>
+                    <select id="country-select" class="filter-select">
                         <option value="">전체 국가</option>
                     </select>
                 </div>
-                <div class="dropdown-group">
-                    <label for="city-select">도시</label>
-                    <select id="city-select" aria-label="도시 선택" disabled>
+                <div class="filter-item">
+                    <label for="city-select" class="filter-label">도시</label>
+                    <select id="city-select" class="filter-select" disabled>
                         <option value="">국가를 먼저 선택하세요</option>
                     </select>
                 </div>
-                <div class="dropdown-group">
-                    <label for="sort-select">정렬</label>
-                    <select id="sort-select" aria-label="정렬 방식 선택">
-                        <option value="rating">평점순</option>
-                        <option value="reviews">후기순</option>
-                        <option value="distance">거리순</option>
+                <div class="filter-item">
+                    <label for="sort-select" class="filter-label">정렬</label>
+                    <select id="sort-select" class="filter-select">
+                        <option value="rating">평점 높은순</option>
+                        <option value="reviews">리뷰 많은순</option>
+                        <option value="distance">가까운순</option>
                     </select>
                 </div>
             </div>
             
-            <label class="category-label">업종</label>
-            <div 
-                class="category-chips" 
-                role="group" 
-                aria-label="업종 선택"
-                id="category-chips"
-            ></div>
+            <div class="category-header">
+                <h3 class="category-title">업종 선택</h3>
+            </div>
+            <div class="category-list" id="category-list"></div>
         </section>
         
-        <div class="results-header">
-            <div class="result-count" role="status" aria-live="polite" id="result-count">
-                검색 결과: <strong>0개</strong>
+        <div class="results-bar">
+            <div class="results-info">
+                <div class="results-text" id="results-text">검색 결과 <strong>0</strong>개</div>
             </div>
-            <div class="view-toggle" role="tablist" aria-label="보기 방식">
-                <button 
-                    class="view-btn" 
-                    id="card-view-btn" 
-                    role="tab"
-                    aria-pressed="true"
-                    aria-controls="results-container"
-                >
-                    카드 보기
-                </button>
-                <button 
-                    class="view-btn" 
-                    id="table-view-btn"
-                    role="tab"
-                    aria-pressed="false"
-                    aria-controls="results-container"
-                >
-                    테이블 보기
-                </button>
+            <div class="view-toggle">
+                <button class="view-btn" id="card-view-btn" aria-pressed="true">카드</button>
+                <button class="view-btn" id="table-view-btn" aria-pressed="false">테이블</button>
             </div>
         </div>
         
-        <div id="results-container" role="region" aria-live="polite"></div>
+        <div id="results-container"></div>
         
-        <div class="pagination-wrapper" id="pagination-wrapper"></div>
+        <div id="pagination-section"></div>
     </main>
     
     <script>
     (function() {
         'use strict';
         
-        // ========== 유틸리티 함수 ==========
+        // SVG Icons
+        const ICONS = {
+            phone: '<svg class="icon action-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+            map: '<svg class="icon action-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+            email: '<svg class="icon action-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+            web: '<svg class="icon action-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+            location: '<svg class="icon detail-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+            clock: '<svg class="icon detail-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+            phoneDetail: '<svg class="icon detail-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+            distance: '<svg class="icon" style="width:16px; height:16px; flex-shrink: 0;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'
+        };
         
         function escapeHtml(text) {
             if (!text) return '';
@@ -993,104 +1231,53 @@
         function validateInput(value, maxLength = 100) {
             if (typeof value !== 'string') return false;
             if (value.length > maxLength) return false;
-            const dangerousPatterns = /<script|javascript:|onerror=|onclick=/i;
-            return !dangerousPatterns.test(value);
+            return !/<script|javascript:|onerror=|onclick=/i.test(value);
         }
         
-        function logError(error, context) {
-            console.error(`[${context}] Error:`, error);
-        }
-        
-        function smoothScrollTo(element) {
+        function smoothScroll(element) {
             if (!element) return;
-            const headerHeight = 100;
-            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-            const offsetPosition = elementPosition - headerHeight;
-            
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
+            const offset = element.getBoundingClientRect().top + window.pageYOffset - 100;
+            window.scrollTo({ top: offset, behavior: 'smooth' });
         }
         
         function calculateDistance(lat1, lon1, lat2, lon2) {
             const R = 6371;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = 
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c;
+            const a = Math.sin(dLat / 2) ** 2 +
+                        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLon / 2) ** 2;
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         }
         
         function formatDistance(distance) {
-            if (distance < 1) {
-                return `${Math.round(distance * 1000)}m`;
-            } else if (distance < 10) {
-                return `${distance.toFixed(1)}km`;
-            } else {
-                return `${Math.round(distance)}km`;
-            }
+            if (distance < 1) return `${Math.round(distance * 1000)}m`;
+            if (distance < 10) return `${distance.toFixed(1)}km`;
+            return `${Math.round(distance)}km`;
         }
-        
-        function generateStars(rating) {
-            const fullStars = Math.floor(rating);
-            const hasHalfStar = rating % 1 >= 0.5;
-            let stars = '';
-            
-            for (let i = 0; i < fullStars; i++) {
-                stars += '★';
-            }
-            if (hasHalfStar) {
-                stars += '★';
-            }
-            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-            for (let i = 0; i < emptyStars; i++) {
-                stars += '☆';
-            }
-            
-            return stars;
-        }
-        
-        // ========== 데이터 ==========
         
         let businessData = [];
-        
-        // ⚠️ 여기에 Google Apps Script 웹 앱 URL을 입력하세요
-        const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzrt0B9KLU7emK78AMV5oznGK1CiqGIx4rFfmKGK5xdFdgd2_lMgKaYtJA6xWt08fvY/exec';
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbzrt0B9KLU7emK78AMV5oznGK1CiqGIx4rFfmKGK5xdFdgd2_lMgKaYtJA6xWt08fvY/exec';
         
         async function fetchData() {
-            console.log('데이터 가져오기 시작...');
             try {
-                const response = await fetch(GAS_WEB_APP_URL);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(`Apps Script Error: ${data.error}`);
-                }
-                
-                console.log('데이터 가져오기 성공:', data);
+                const res = await fetch(GAS_URL);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
                 return data;
             } catch (error) {
-                console.error('데이터를 가져오는 중 오류 발생:', error);
-                logError(error, 'fetchData');
+                console.error('Fetch error:', error);
                 throw error;
             }
         }
-        
-        // ========== 상태 관리 ==========
         
         const state = {
             currentView: 'card',
             filteredData: [],
             currentPage: 1,
             itemsPerPage: 12,
-            selectedCategories: new Set(),
+            selectedCategories: new Set(['전체']),
             searchQuery: '',
             selectedCountry: '',
             selectedCity: '',
@@ -1100,302 +1287,252 @@
             error: null
         };
         
-        // ========== DOM 요소 ==========
-        
-        const elements = {
+        const $ = {
             searchInput: document.getElementById('search-input'),
             countrySelect: document.getElementById('country-select'),
             citySelect: document.getElementById('city-select'),
             sortSelect: document.getElementById('sort-select'),
-            categoryChips: document.getElementById('category-chips'),
+            categoryList: document.getElementById('category-list'),
             cardViewBtn: document.getElementById('card-view-btn'),
             tableViewBtn: document.getElementById('table-view-btn'),
             resultsContainer: document.getElementById('results-container'),
-            resultCount: document.getElementById('result-count'),
-            paginationWrapper: document.getElementById('pagination-wrapper'),
-            locationNotice: document.getElementById('location-notice')
+            resultsText: document.getElementById('results-text'),
+            paginationSection: document.getElementById('pagination-section'),
+            locationNotice: document.getElementById('location-notice'),
+            totalBusinesses: document.getElementById('total-businesses'),
+            totalCountries: document.getElementById('total-countries'),
+            totalCities: document.getElementById('total-cities')
         };
         
         let searchTimeout = null;
         
-        // ========== 초기화 ==========
-        
         async function init() {
             try {
                 state.isLoading = true;
-                state.error = null;
                 renderResults();
                 
                 businessData = await fetchData();
-                
-                state.isLoading = false;
                 state.filteredData = [...businessData];
+                state.isLoading = false;
                 
+                updateStats();
                 populateCountries();
                 populateCategories();
-                setupEventListeners();
+                setupEvents();
                 getUserLocation();
                 
-                // ⭐ [업데이트] 1페이지를 먼저 렌더링합니다.
-                // 1페이지 이미지들은 이 시점에 '즉시 로드'됩니다.
-                renderResults(); 
+                renderResults();
                 renderPagination();
                 updateResultCount();
-                
-                // Lazy Loading은 2페이지부터 작동하도록 초기화합니다.
                 initLazyLoading();
-                
             } catch (error) {
-                logError(error, 'init');
                 state.isLoading = false;
-                state.error = '데이터를 불러오는 데 실패했습니다. Apps Script URL과 시트 이름을 확인해주세요.';
+                state.error = '데이터를 불러오는 데 실패했습니다.';
                 renderResults();
             }
         }
         
-        // ========== 위치 기능 ==========
-        
-        function getUserLocation() {
-            const isInIframe = window.self !== window.top;
+        function updateStats() {
+            const countries = new Set(businessData.map(b => b.country));
+            const cities = new Set(businessData.map(b => b.city));
             
+            animateNumber($.totalBusinesses, businessData.length);
+            animateNumber($.totalCountries, countries.size);
+            animateNumber($.totalCities, cities.size);
+        }
+        
+        function animateNumber(element, target) {
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 20);
+        }
+
+        function showLocationNotice(msg, type) {
+            let textSpan = $.locationNotice.querySelector('.location-notice-text');
+            
+            if (!textSpan) {
+                textSpan = document.createElement('span');
+                textSpan.className = 'location-notice-text';
+                const btn = $.locationNotice.querySelector('.location-btn');
+                if (btn) {
+                    $.locationNotice.insertBefore(textSpan, btn);
+                } else {
+                    $.locationNotice.appendChild(textSpan);
+                }
+            }
+            
+            textSpan.textContent = msg;
+            
+            $.locationNotice.className = `location-notice ${type}`;
+            $.locationNotice.classList.remove('hidden');
+        }
+
+        function getUserLocation() {
             if (!navigator.geolocation) {
-                showLocationNotice('위치 서비스를 지원하지 않는 브라우저입니다. 거리순 정렬은 사용할 수 없습니다.', 'info');
+                showLocationNotice('위치 서비스를 지원하지 않습니다.', 'error');
                 disableDistanceSort();
                 return;
             }
-            
-            console.log(isInIframe ? 'iframe 환경이 감지되었습니다.' : '위치 정보는 선택사항입니다.');
             showLocationNotice('💡 거리순 정렬을 원하시면 아래 버튼을 클릭하세요.', 'info');
             createLocationButton();
             disableDistanceSort();
         }
         
         function createLocationButton() {
-            const existingButton = elements.locationNotice.querySelector('.location-btn');
-            if (existingButton) return;
-            
-            const button = document.createElement('button');
-            button.className = 'location-btn';
-            button.innerHTML = '📍 내 위치 사용하기';
-            button.style.cssText = `
-                margin-left: 0.5rem;
-                padding: 0.5rem 1rem;
-                background: var(--primary-gradient);
-                color: white;
-                border: none;
-                border-radius: 6px;
-                font-size: 0.875rem;
-                font-weight: 600;
-                cursor: pointer;
-                transition: var(--transition);
+            const btn = document.createElement('button');
+            btn.className = 'location-btn';
+            btn.innerHTML = `
+                <svg class="icon" viewBox="0 0 24 24" style="width:18px; height:18px; stroke-width: 2.5; flex-shrink: 0;">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <span>내 위치 사용</span>
             `;
-            
-            button.addEventListener('click', requestUserLocation);
-            button.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.05)';
-            });
-            button.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
-            
-            elements.locationNotice.appendChild(button);
+            btn.addEventListener('click', requestLocation);
+            $.locationNotice.appendChild(btn);
         }
         
-        function requestUserLocation() {
+        function requestLocation() {
             showLocationNotice('📍 위치 정보를 가져오는 중...', 'info');
-            
-            const options = {
-                enableHighAccuracy: false,
-                timeout: 10000,
-                maximumAge: 300000
-            };
-            
             navigator.geolocation.getCurrentPosition(
-                (position) => {
+                (pos) => {
                     state.userLocation = {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
+                        latitude: pos.coords.latitude,
+                        longitude: pos.coords.longitude
                     };
-                    
-                    businessData.forEach(business => {
-                        business.distance = calculateDistance(
+                    businessData.forEach(b => {
+                        b.distance = calculateDistance(
                             state.userLocation.latitude,
                             state.userLocation.longitude,
-                            business.latitude,
-                            business.longitude
+                            b.latitude,
+                            b.longitude
                         );
                     });
-                    
-                    showLocationNotice('✅ 위치 정보를 가져왔습니다! 이제 거리순 정렬이 가능합니다.', 'success');
+                    showLocationNotice('✅ 위치 정보를 가져왔습니다!', 'success');
                     enableDistanceSort();
-                    
-                    if (state.sortBy === 'distance') {
-                        handleFilterChange();
-                    }
-                    
-                    setTimeout(() => {
-                        elements.locationNotice.classList.add('hidden');
-                    }, 3000);
+                    if (state.sortBy === 'distance') handleFilterChange();
+
+                    const btn = $.locationNotice.querySelector('.location-btn');
+                    if (btn) btn.classList.add('hidden');
+
+                    setTimeout(() => $.locationNotice.classList.add('hidden'), 3000);
                 },
-                (error) => {
-                    console.warn('위치 정보 가져오기 실패:', error);
-                    let errorMessage = '⚠️ 위치 정보를 가져올 수 없습니다. ';
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMessage += '브라우저 설정에서 위치 권한을 허용해주세요.'; break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage += '위치 정보를 사용할 수 없습니다.'; break;
-                        case error.TIMEOUT:
-                            errorMessage += '위치 정보 요청 시간이 초과되었습니다.'; break;
-                        default:
-                            errorMessage += '알 수 없는 오류가 발생했습니다.';
-                    }
-                    showLocationNotice(errorMessage, 'error');
+                () => {
+                    showLocationNotice('⚠️ 위치 정보를 가져올 수 없습니다.', 'error');
                     if (state.sortBy === 'distance') {
                         state.sortBy = 'rating';
-                        elements.sortSelect.value = 'rating';
+                        $.sortSelect.value = 'rating';
                         handleFilterChange();
                     }
-                    disableDistanceSort();
-                    setTimeout(() => {
-                        elements.locationNotice.classList.add('hidden');
-                    }, 10000);
-                },
-                options
+                }
             );
         }
         
         function disableDistanceSort() {
-            const distanceOption = elements.sortSelect.querySelector('option[value="distance"]');
-            if (distanceOption) {
-                distanceOption.disabled = true;
-                distanceOption.textContent = '거리순 (위치 정보 필요)';
+            const opt = $.sortSelect.querySelector('option[value="distance"]');
+            if (opt) {
+                opt.disabled = true;
+                opt.textContent = '가까운순 (위치 필요)';
             }
         }
         
         function enableDistanceSort() {
-            const distanceOption = elements.sortSelect.querySelector('option[value="distance"]');
-            if (distanceOption) {
-                distanceOption.disabled = false;
-                distanceOption.textContent = '거리순';
+            const opt = $.sortSelect.querySelector('option[value="distance"]');
+            if (opt) {
+                opt.disabled = false;
+                opt.textContent = '가까운순';
             }
         }
         
-        function showLocationNotice(message, type) {
-            elements.locationNotice.textContent = message;
-            elements.locationNotice.className = `location-notice ${type}`;
-            elements.locationNotice.classList.remove('hidden');
-        }
-        
-        // ========== 데이터 처리 ==========
-        
         function populateCountries() {
             const countries = [...new Set(businessData.map(b => b.country))].sort();
-            elements.countrySelect.innerHTML = '<option value="">전체 국가</option>';
-            countries.forEach(country => {
-                const option = document.createElement('option');
-                option.value = country;
-                option.textContent = country;
-                elements.countrySelect.appendChild(option);
+            $.countrySelect.innerHTML = '<option value="">전체 국가</option>';
+            countries.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = opt.textContent = c;
+                $.countrySelect.appendChild(opt);
             });
         }
         
         function populateCities(country) {
             if (!country) {
-                elements.citySelect.innerHTML = '<option value="">국가를 먼저 선택하세요</option>';
-                elements.citySelect.disabled = true;
+                $.citySelect.innerHTML = '<option value="">국가를 먼저 선택하세요</option>';
+                $.citySelect.disabled = true;
                 return;
             }
-            const cities = [...new Set(
-                businessData
-                    .filter(b => b.country === country)
-                    .map(b => b.city)
-            )].sort();
-            elements.citySelect.innerHTML = '<option value="">전체 도시</option>';
-            cities.forEach(city => {
-                const option = document.createElement('option');
-                option.value = city;
-                option.textContent = city;
-                elements.citySelect.appendChild(option);
+            const cities = [...new Set(businessData.filter(b => b.country === country).map(b => b.city))].sort();
+            $.citySelect.innerHTML = '<option value="">전체 도시</option>';
+            cities.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = opt.textContent = c;
+                $.citySelect.appendChild(opt);
             });
-            elements.citySelect.disabled = false;
+            $.citySelect.disabled = false;
         }
         
         function populateCategories() {
             const categories = new Set();
-            businessData.forEach(business => {
-                business.services.forEach(service => categories.add(service));
-            });
-            const sortedCategories = ['전체', ...Array.from(categories).sort()];
-            elements.categoryChips.innerHTML = '';
-            sortedCategories.forEach((category, index) => {
+            businessData.forEach(b => b.services.forEach(s => categories.add(s)));
+            const sorted = ['전체', ...Array.from(categories).sort()];
+            
+            $.categoryList.innerHTML = '';
+            sorted.forEach(cat => {
                 const chip = document.createElement('button');
-                chip.className = category === '전체' ? 'chip all-chip' : 'chip';
+                chip.className = cat === '전체' ? 'category-chip all' : 'category-chip';
                 chip.setAttribute('role', 'checkbox');
-                chip.setAttribute('aria-checked', category === '전체' ? 'true' : 'false');
-                chip.setAttribute('aria-label', `${category} 선택`);
-                chip.setAttribute('tabindex', index === 0 ? '0' : '-1');
-                chip.dataset.category = category;
-                chip.innerHTML = `
-                    <span class="chip-check">✓</span>
-                    <span>${category === '전체' ? '✨ ' : ''}${escapeHtml(category)}</span>
-                `;
-                chip.addEventListener('click', () => handleCategoryClick(category));
-                elements.categoryChips.appendChild(chip);
+                chip.setAttribute('aria-checked', cat === '전체' ? 'true' : 'false');
+                chip.dataset.category = cat;
+                chip.textContent = cat;
+                chip.addEventListener('click', () => handleCategoryClick(cat));
+                $.categoryList.appendChild(chip);
             });
-            state.selectedCategories.add('전체');
         }
         
-        // ========== 이벤트 핸들러 ==========
-        
-        function setupEventListeners() {
-            elements.searchInput.addEventListener('input', (e) => {
+        function setupEvents() {
+            $.searchInput.addEventListener('input', (e) => {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
-                    const value = e.target.value;
-                    if (validateInput(value, 200)) {
-                        state.searchQuery = value.trim();
+                    if (validateInput(e.target.value, 200)) {
+                        state.searchQuery = e.target.value.trim();
                         handleFilterChange();
                     }
                 }, 300);
             });
             
-            elements.countrySelect.addEventListener('change', (e) => {
+            $.countrySelect.addEventListener('change', (e) => {
                 state.selectedCountry = e.target.value;
                 state.selectedCity = '';
-                elements.citySelect.value = '';
+                $.citySelect.value = '';
                 populateCities(e.target.value);
                 handleFilterChange();
             });
             
-            elements.citySelect.addEventListener('change', (e) => {
+            $.citySelect.addEventListener('change', (e) => {
                 state.selectedCity = e.target.value;
                 handleFilterChange();
             });
             
-            elements.sortSelect.addEventListener('change', (e) => {
+            $.sortSelect.addEventListener('change', (e) => {
                 state.sortBy = e.target.value;
-                if (state.sortBy === 'distance' && !state.userLocation) {
-                    showLocationNotice('⚠️ 위치 정보가 없습니다. 위치 권한을 허용해주세요.', 'error');
-                    getUserLocation();
-                }
                 handleFilterChange();
             });
             
-            elements.cardViewBtn.addEventListener('click', () => switchView('card'));
-            elements.tableViewBtn.addEventListener('click', () => switchView('table'));
-            
-            elements.categoryChips.addEventListener('keydown', handleChipKeyboard);
+            $.cardViewBtn.addEventListener('click', () => switchView('card'));
+            $.tableViewBtn.addEventListener('click', () => switchView('table'));
         }
         
         function handleCategoryClick(category) {
             if (category === '전체') {
-                if (state.selectedCategories.has('전체')) {
-                    state.selectedCategories.clear();
-                } else {
-                    state.selectedCategories.clear();
-                    state.selectedCategories.add('전체');
-                }
+                state.selectedCategories.clear();
+                state.selectedCategories.add('전체');
             } else {
                 state.selectedCategories.delete('전체');
                 if (state.selectedCategories.has(category)) {
@@ -1412,245 +1549,169 @@
         }
         
         function updateChipStates() {
-            const chips = elements.categoryChips.querySelectorAll('.chip');
-            chips.forEach(chip => {
-                const category = chip.dataset.category;
-                const isSelected = state.selectedCategories.has(category);
-                chip.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+            $.categoryList.querySelectorAll('.category-chip').forEach(chip => {
+                const isSelected = state.selectedCategories.has(chip.dataset.category);
+                chip.setAttribute('aria-checked', isSelected);
             });
-        }
-        
-        function handleChipKeyboard(e) {
-            const chips = Array.from(elements.categoryChips.querySelectorAll('.chip'));
-            const currentIndex = chips.findIndex(chip => chip === document.activeElement);
-            if (currentIndex === -1) return;
-            let newIndex = currentIndex;
-            switch(e.key) {
-                case 'ArrowLeft':
-                    e.preventDefault();
-                    newIndex = Math.max(0, currentIndex - 1); break;
-                case 'ArrowRight':
-                    e.preventDefault();
-                    newIndex = Math.min(chips.length - 1, currentIndex + 1); break;
-                case 'Enter':
-                case ' ':
-                    e.preventDefault();
-                    chips[currentIndex].click(); return;
-                default:
-                    return;
-            }
-            chips.forEach((chip, idx) => {
-                chip.setAttribute('tabindex', idx === newIndex ? '0' : '-1');
-            });
-            chips[newIndex].focus();
         }
         
         function handleFilterChange() {
             state.currentPage = 1;
-            setTimeout(() => {
-                try {
-                    applyFilters();
-                    applySorting();
-                    renderResults();
-                    renderPagination();
-                    updateResultCount();
-                } catch (error) {
-                    logError(error, 'handleFilterChange');
-                    showError('필터 적용 중 오류가 발생했습니다.');
-                }
-            }, 50);
+            applyFilters();
+            applySorting();
+            renderResults();
+            renderPagination();
+            updateResultCount();
         }
         
         function applyFilters() {
-            state.filteredData = businessData.filter(business => {
+            state.filteredData = businessData.filter(b => {
                 if (state.searchQuery) {
-                    const searchLower = state.searchQuery.toLowerCase();
-                    const matchesSearch = 
-                        business.businessName.toLowerCase().includes(searchLower) ||
-                        business.address.toLowerCase().includes(searchLower) ||
-                        business.feature.toLowerCase().includes(searchLower);
-                    if (!matchesSearch) return false;
+                    const q = state.searchQuery.toLowerCase();
+                    
+                    if (![b.businessName, b.address, b.feature].some(f => String(f).toLowerCase().includes(q))) {
+                        return false;
+                    }
                 }
-                if (state.selectedCountry && business.country !== state.selectedCountry) {
-                    return false;
-                }
-                if (state.selectedCity && business.city !== state.selectedCity) {
-                    return false;
-                }
+                if (state.selectedCountry && b.country !== state.selectedCountry) return false;
+                if (state.selectedCity && b.city !== state.selectedCity) return false;
                 if (!state.selectedCategories.has('전체')) {
-                    const hasMatchingService = business.services.some(service => 
-                        state.selectedCategories.has(service)
-                    );
-                    if (!hasMatchingService) return false;
+                    if (!b.services.some(s => state.selectedCategories.has(s))) return false;
                 }
                 return true;
             });
         }
         
         function applySorting() {
-            switch(state.sortBy) {
-                case 'rating':
-                    state.filteredData.sort((a, b) => b.rating - a.rating); break;
-                case 'reviews':
-                    state.filteredData.sort((a, b) => b.reviewCount - a.reviewCount); break;
-                case 'distance':
-                    if (state.userLocation) {
-                        state.filteredData.sort((a, b) => (a.distance || 9999) - (b.distance || 9999));
-                    }
-                    break;
-            }
+            state.filteredData.sort((a, b) => {
+                switch (state.sortBy) {
+                    case 'rating': return b.rating - a.rating;
+                    case 'reviews': return b.reviewCount - a.reviewCount;
+                    case 'distance': return (a.distance || 9999) - (b.distance || 9999);
+                    default: return 0;
+                }
+            });
         }
         
         function switchView(view) {
             state.currentView = view;
-            elements.cardViewBtn.setAttribute('aria-pressed', view === 'card');
-            elements.tableViewBtn.setAttribute('aria-pressed', view === 'table');
+            $.cardViewBtn.setAttribute('aria-pressed', view === 'card');
+            $.tableViewBtn.setAttribute('aria-pressed', view === 'table');
             renderResults();
         }
         
-        // ========== 렌더링 ==========
-        
         function renderResults() {
-            try {
-                elements.resultsContainer.innerHTML = '';
-                
-                if (state.isLoading) {
-                    elements.resultsContainer.innerHTML = `
-                        <div class="loading-state" role="status">
-                            <div class="loading-spinner" aria-label="데이터를 불러오는 중"></div>
-                            <p>데이터를 불러오는 중...</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                if (state.error) {
-                    showError(state.error);
-                    return;
-                }
-                
-                if (state.filteredData.length === 0) {
-                    const hasFilters = state.searchQuery || state.selectedCountry || 
-                                     state.selectedCity || !state.selectedCategories.has('전체');
-                    elements.resultsContainer.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-icon">${hasFilters ? '😢' : '🔍'}</div>
-                            <div class="empty-message">
-                                ${hasFilters ? '검색 결과가 없습니다' : '업체를 검색해보세요'}
-                            </div>
-                            <div class="empty-hint">
-                                ${hasFilters ? '다른 검색 조건을 시도해보세요' : '위의 필터를 사용하여 업체를 찾아보세요'}
-                            </div>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                const startIndex = (state.currentPage - 1) * state.itemsPerPage;
-                const endIndex = startIndex + state.itemsPerPage;
-                const pageData = state.filteredData.slice(startIndex, endIndex);
-                
-                if (state.currentView === 'card') {
-                    renderCardView(pageData);
-                } else {
-                    renderTableView(pageData);
-                }
-                
-                // ⭐ [업데이트] 1페이지 렌더링 후 스크롤하지 않음 (페이징 시에만 스크롤)
-                if (state.currentPage > 1) {
-                    smoothScrollTo(elements.resultsContainer);
-                }
-                
-            } catch (error) {
-                logError(error, 'renderResults');
-                showError('결과를 표시하는 중 오류가 발생했습니다.');
+            $.resultsContainer.innerHTML = '';
+            
+            if (state.isLoading) {
+                $.resultsContainer.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <div class="loading-text">데이터를 불러오는 중...</div>
+                    </div>
+                `;
+                return;
             }
+            
+            if (state.error) {
+                $.resultsContainer.innerHTML = `
+                    <div class="error-state">
+                        <div class="state-icon">⚠️</div>
+                        <h3 class="state-title">오류 발생</h3>
+                        <p class="state-description">${escapeHtml(state.error)}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            if (state.filteredData.length === 0) {
+                $.resultsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="state-icon">🔍</div>
+                        <h3 class="state-title">검색 결과가 없습니다</h3>
+                        <p class="state-description">다른 검색 조건을 시도해보세요</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const start = (state.currentPage - 1) * state.itemsPerPage;
+            const end = start + state.itemsPerPage;
+            const pageData = state.filteredData.slice(start, end);
+            
+            if (state.currentView === 'card') {
+                renderCardView(pageData);
+            } else {
+                renderTableView(pageData);
+            }
+            
+            if (state.currentPage > 1) smoothScroll($.resultsContainer);
         }
         
-        // ========== ⭐ [업데이트됨] 카드 뷰 렌더링 ==========
         function renderCardView(data) {
             const grid = document.createElement('div');
             grid.className = 'card-grid';
             
-            data.forEach(business => {
+            data.forEach((b, idx) => {
                 const card = document.createElement('article');
                 card.className = 'business-card';
-                card.setAttribute('role', 'article');
-                card.setAttribute('aria-label', `${business.businessName} 업체 정보`);
+                card.style.animationDelay = `${idx * 0.05}s`;
                 
-                // ⭐ [업데이트] 1페이지만 즉시 로드, 2페이지부터 지연 로드
-                let imgHtml = '';
-                const escapedImgUrl = escapeHtml(business.image);
-                const escapedAltText = escapeHtml(business.businessName);
-
-                if (state.currentPage === 1) {
-                    // 1페이지: 즉시 로드 (src 사용, lazy-loading 없음)
-                    imgHtml = `
-                        <img 
-                            class="card-image loaded" 
-                            src="${escapedImgUrl}" 
-                            alt="${escapedAltText}"
-                        />
-                    `;
-                } else {
-                    // 2페이지 이상: 지연 로드 (data-src 및 loading="lazy" 사용)
-                    imgHtml = `
-                        <img 
-                            class="card-image" 
-                            data-src="${escapedImgUrl}"
-                            alt="${escapedAltText}"
-                            loading="lazy"
-                        />
-                    `;
-                }
+                const imgAttr = state.currentPage === 1 
+                    ? `src="${escapeHtml(b.image)}"` 
+                    : `data-src="${escapeHtml(b.image)}" loading="lazy"`;
                 
-                const stars = generateStars(business.rating);
-                const ratingHtml = `
-                    <div class="rating">
-                        <span class="rating-stars" aria-label="${business.rating}점">${stars}</span>
-                        <span class="rating-value">${business.rating}</span>
-                        <span class="rating-count">(${business.reviewCount})</span>
-                        ${business.distance !== undefined && state.userLocation ? 
-                            `<span class="distance-badge">📍 ${formatDistance(business.distance)}</span>` : ''}
-                    </div>
-                `;
+                const distance = b.distance && state.userLocation
+                    ? `<div class="card-distance">${ICONS.distance} ${formatDistance(b.distance)}</div>`
+                    : '';
                 
-                const tagsHtml = business.services
-                    .map(service => `<span class="tag">${escapeHtml(service)}</span>`)
-                    .join('');
+                const tags = b.services.map(s => 
+                    `<span class="tag">${escapeHtml(s)}</span>`
+                ).join('');
                 
-                const emailBtn = business.email ? 
-                    `<a href="mailto:${escapeHtml(business.email)}" class="action-btn" aria-label="이메일 보내기">📧 이메일</a>` : '';
+                const email = b.email 
+                    ? `<a href="mailto:${escapeHtml(b.email)}" class="action-btn">${ICONS.email}<span class="action-label">이메일</span></a>`
+                    : '';
                 
-                const websiteBtn = business.website ? 
-                    `<a href="https://${escapeHtml(business.website)}" class="action-btn" target="_blank" rel="noopener noreferrer" aria-label="홈페이지 방문">🌐 홈페이지</a>` : '';
+                const website = b.website
+                    ? `<a href="https://${escapeHtml(b.website)}" target="_blank" rel="noopener" class="action-btn">${ICONS.web}<span class="action-label">웹사이트</span></a>`
+                    : '';
                 
                 card.innerHTML = `
-                    ${imgHtml}
-                    <div class="card-content">
-                        <h3>${escapeHtml(business.businessName)}</h3>
-                        ${ratingHtml}
-                        <div class="card-tags">${tagsHtml}</div>
-                        <p class="card-feature">${escapeHtml(business.feature)}</p>
-                        <div class="card-info">
-                            <div class="info-item">
-                                <span class="info-icon">📍</span>
-                                <span>${escapeHtml(business.address)}</span>
+                    <div class="card-image-container">
+                        <img ${imgAttr} alt="${escapeHtml(b.businessName)}" class="card-image">
+                        <div class="card-badge">
+                            <span class="badge-star">★</span>
+                            <span class="badge-rating">${b.rating}</span>
+                            <span class="badge-reviews">(${b.reviewCount})</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">${escapeHtml(b.businessName)}</h3>
+                        <div class="card-tags">${tags}</div>
+                        <p class="card-description">${escapeHtml(b.feature)}</p>
+                        ${distance}
+                        <div class="card-details">
+                            <div class="detail-item">
+                                ${ICONS.location}
+                                <span class="detail-text">${escapeHtml(b.address)}</span>
                             </div>
-                            <div class="info-item">
-                                <span class="info-icon">🕐</span>
-                                <span>${escapeHtml(business.hours)}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-icon">📞</span>
-                                <span>${escapeHtml(business.phone)}</span>
+                            <div class="detail-item">
+                                ${ICONS.clock}
+                                <span class="detail-text">${escapeHtml(b.hours)}</span>
                             </div>
                         </div>
                         <div class="card-actions">
-                            <a href="tel:${escapeHtml(business.phone)}" class="action-btn" aria-label="전화 걸기">📞 전화</a>
-                            <a href="${escapeHtml(business.googleMapsUrl)}" class="action-btn" target="_blank" rel="noopener noreferrer" aria-label="지도에서 보기">📍 지도</a>
-                            ${emailBtn}
-                            ${websiteBtn}
+                            <a href="tel:${escapeHtml(b.phone)}" class="action-btn">
+                                ${ICONS.phone}
+                                <span class="action-label">전화</span>
+                            </a>
+                            <a href="${escapeHtml(b.googleMapsUrl)}" target="_blank" rel="noopener" class="action-btn">
+                                ${ICONS.map}
+                                <span class="action-label">지도</span>
+                            </a>
+                            ${email}
+                            ${website}
                         </div>
                     </div>
                 `;
@@ -1658,161 +1719,126 @@
                 grid.appendChild(card);
             });
             
-            elements.resultsContainer.appendChild(grid);
+            $.resultsContainer.appendChild(grid);
         }
         
-        // ========== ⭐ [업데이트됨] 테이블 뷰 렌더링 ==========
         function renderTableView(data) {
-            const container = document.createElement('div');
-            container.className = 'table-container';
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-container';
             
             const table = document.createElement('table');
             table.className = 'business-table';
-            table.setAttribute('role', 'table');
-            
             table.innerHTML = `
                 <thead>
                     <tr>
-                        <th scope="col">이미지</th>
-                        <th scope="col">업체명</th>
-                        <th scope="col">평점</th>
-                        <th scope="col">위치</th>
-                        <th scope="col">서비스</th>
-                        <th scope="col">연락처</th>
-                        <th scope="col">액션</th>
+                        <th>이미지</th>
+                        <th>업체명</th>
+                        <th>평점</th>
+                        <th>위치</th>
+                        <th>카테고리</th>
+                        <th>연락처</th>
+                        <th>액션</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             `;
             
             const tbody = table.querySelector('tbody');
-            
-            data.forEach(business => {
+            data.forEach(b => {
                 const row = document.createElement('tr');
-                
-                // ⭐ [업데이트] 1페이지만 즉시 로드, 2페이지부터 지연 로드
-                let imgHtml = '';
-                const escapedImgUrl = escapeHtml(business.image);
-                const escapedAltText = escapeHtml(business.businessName);
-
-                if (state.currentPage === 1) {
-                    imgHtml = `
-                        <img 
-                            class="table-image loaded" 
-                            src="${escapedImgUrl}" 
-                            alt="${escapedAltText}"
-                        />
-                    `;
-                } else {
-                    imgHtml = `
-                        <img 
-                            class="table-image" 
-                            data-src="${escapedImgUrl}"
-                            alt="${escapedAltText}"
-                            loading="lazy"
-                        />
-                    `;
-                }
-
-                const stars = generateStars(business.rating);
-                const ratingHtml = `
-                    <div class="rating">
-                        <span class="rating-stars">${stars}</span>
-                        <span class="rating-value">${business.rating}</span>
-                        <span class="rating-count">(${business.reviewCount})</span>
-                    </div>
-                `;
-                
-                const tagsHtml = business.services
-                    .map(service => `<span class="tag">${escapeHtml(service)}</span>`)
-                    .join('');
-                
-                const emailBtn = business.email ? 
-                    `<a href="mailto:${escapeHtml(business.email)}" class="table-action-btn">📧</a>` : '';
-                
-                const websiteBtn = business.website ? 
-                    `<a href="https://${escapeHtml(business.website)}" class="table-action-btn" target="_blank" rel="noopener noreferrer">🌐</a>` : '';
+                const imgAttr = state.currentPage === 1 
+                    ? `src="${escapeHtml(b.image)}"` 
+                    : `data-src="${escapeHtml(b.image)}" loading="lazy"`;
+                const tags = b.services.map(s => `<span class="tag">${escapeHtml(s)}</span>`).join('');
+                const email = b.email ? `<a href="mailto:${escapeHtml(b.email)}" class="table-action-btn" title="이메일">${ICONS.email}</a>` : '';
+                const website = b.website ? `<a href="https://post.naver.com/${escapeHtml(b.website)}" target="_blank" rel="noopener" class="table-action-btn" title="웹사이트">${ICONS.web}</a>` : '';
                 
                 row.innerHTML = `
-                    <td>${imgHtml}</td>
-                    <td><strong>${escapeHtml(business.businessName)}</strong></td>
-                    <td>${ratingHtml}</td>
-                    <td>${escapeHtml(business.city)}, ${escapeHtml(business.country)}</td>
-                    <td><div class="table-tags">${tagsHtml}</div></td>
-                    <td>${escapeHtml(business.phone)}</td>
+                    <td><img ${imgAttr} alt="${escapeHtml(b.businessName)}" class="table-image"></td>
+                    <td><div class="table-name">${escapeHtml(b.businessName)}</div></td>
+                    <td>
+                        <div class="table-rating">
+                            <span style="color: #FFB800;">★</span>
+                            <strong>${b.rating}</strong>
+                            <span style="color: var(--text-tertiary);">(${b.reviewCount})</span>
+                        </div>
+                    </td>
+                    <td>${escapeHtml(b.city)}, ${escapeHtml(b.country)}</td>
+                    <td><div class="card-tags">${tags}</div></td>
+                    <td>${escapeHtml(b.phone)}</td>
                     <td>
                         <div class="table-actions">
-                            <a href="tel:${escapeHtml(business.phone)}" class="table-action-btn">📞</a>
-                            <a href="${escapeHtml(business.googleMapsUrl)}" class="table-action-btn" target="_blank" rel="noopener noreferrer">📍</a>
-                            ${emailBtn}
-                            ${websiteBtn}
+                            <a href="tel:${escapeHtml(b.phone)}" class="table-action-btn" title="전화">${ICONS.phone}</a>
+                            <a href="${escapeHtml(b.googleMapsUrl)}" target="_blank" rel="noopener" class="table-action-btn" title="지도">${ICONS.map}</a>
+                            ${email}
+                            ${website}
                         </div>
                     </td>
                 `;
-                
                 tbody.appendChild(row);
             });
             
-            container.appendChild(table);
-            elements.resultsContainer.appendChild(container);
+            wrapper.appendChild(table);
+            $.resultsContainer.appendChild(wrapper);
         }
         
         function updateResultCount() {
             const count = state.filteredData.length;
             const selectedCount = state.selectedCategories.size - (state.selectedCategories.has('전체') ? 1 : 0);
-            const badge = selectedCount > 0 ? 
-                `<span class="selected-badge" aria-label="${selectedCount}개 업종 선택됨">${selectedCount}</span>` : '';
-            elements.resultCount.innerHTML = `
-                검색 결과: <strong>${count}개</strong>
-                ${badge}
-            `;
+            const badge = selectedCount > 0 ? `<span class="filter-count">${selectedCount}</span>` : '';
+            $.resultsText.innerHTML = `검색 결과 <strong>${count}</strong>개 ${badge}`;
         }
         
         function renderPagination() {
             if (state.filteredData.length === 0) {
-                elements.paginationWrapper.innerHTML = '';
+                $.paginationSection.innerHTML = '';
                 return;
             }
+            
             const totalPages = Math.ceil(state.filteredData.length / state.itemsPerPage);
             if (totalPages <= 1) {
-                elements.paginationWrapper.innerHTML = '';
+                $.paginationSection.innerHTML = '';
                 return;
             }
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = `
-                <div class="items-per-page">
-                    <label for="items-per-page-select">페이지당 항목:</label>
-                    <select id="items-per-page-select" aria-label="페이지당 표시할 항목 수">
+            
+            const section = document.createElement('div');
+            section.className = 'pagination-section';
+            
+            section.innerHTML = `
+                <div class="items-selector">
+                    <span>페이지당</span>
+                    <select id="items-select" class="items-select">
                         <option value="12" ${state.itemsPerPage === 12 ? 'selected' : ''}>12개</option>
                         <option value="20" ${state.itemsPerPage === 20 ? 'selected' : ''}>20개</option>
                         <option value="50" ${state.itemsPerPage === 50 ? 'selected' : ''}>50개</option>
-                        <option value="100" ${state.itemsPerPage === 100 ? 'selected' : ''}>100개</option>
                     </select>
                 </div>
-                <nav class="pagination" role="navigation" aria-label="페이지네이션"></nav>
+                <div class="pagination" id="pagination"></div>
             `;
-            const pagination = wrapper.querySelector('.pagination');
-            const prevBtn = createPageButton('‹ 이전', state.currentPage - 1, state.currentPage === 1);
+            
+            const pagination = section.querySelector('#pagination');
+            
+            const prevBtn = createPageBtn('‹', state.currentPage - 1, state.currentPage === 1);
             pagination.appendChild(prevBtn);
-            const pageNumbers = getSmartPageNumbers(state.currentPage, totalPages);
-            pageNumbers.forEach(page => {
+            
+            getPageNumbers(state.currentPage, totalPages).forEach(page => {
                 if (page === '...') {
                     const ellipsis = document.createElement('span');
                     ellipsis.className = 'page-ellipsis';
                     ellipsis.textContent = '...';
-                    ellipsis.setAttribute('aria-hidden', 'true');
                     pagination.appendChild(ellipsis);
                 } else {
-                    const btn = createPageButton(page.toString(), page, false, page === state.currentPage);
-                    pagination.appendChild(btn);
+                    pagination.appendChild(createPageBtn(page, page, false, page === state.currentPage));
                 }
             });
-            const nextBtn = createPageButton('다음 ›', state.currentPage + 1, state.currentPage === totalPages);
+            
+            const nextBtn = createPageBtn('›', state.currentPage + 1, state.currentPage === totalPages);
             pagination.appendChild(nextBtn);
-            elements.paginationWrapper.innerHTML = '';
-            elements.paginationWrapper.appendChild(wrapper);
-            const itemsSelect = wrapper.querySelector('#items-per-page-select');
-            itemsSelect.addEventListener('change', (e) => {
+            
+            $.paginationSection.innerHTML = '';
+            $.paginationSection.appendChild(section);
+            
+            document.getElementById('items-select').addEventListener('change', (e) => {
                 state.itemsPerPage = parseInt(e.target.value);
                 state.currentPage = 1;
                 renderResults();
@@ -1820,17 +1846,12 @@
             });
         }
         
-        function createPageButton(text, page, disabled = false, current = false) {
+        function createPageBtn(text, page, disabled = false, current = false) {
             const btn = document.createElement('button');
             btn.className = 'page-btn';
             btn.textContent = text;
             btn.disabled = disabled;
-            if (current) {
-                btn.setAttribute('aria-current', 'page');
-                btn.setAttribute('aria-label', `현재 페이지, 페이지 ${page}`);
-            } else {
-                btn.setAttribute('aria-label', `페이지 ${page}로 이동`);
-            }
+            if (current) btn.setAttribute('aria-current', 'page');
             if (!disabled && !current) {
                 btn.addEventListener('click', () => {
                     state.currentPage = page;
@@ -1841,7 +1862,7 @@
             return btn;
         }
         
-        function getSmartPageNumbers(current, total) {
+        function getPageNumbers(current, total) {
             const pages = [];
             const delta = 2;
             for (let i = 1; i <= total; i++) {
@@ -1854,103 +1875,51 @@
             return pages;
         }
         
-        function showError(message) {
-            elements.resultsContainer.innerHTML = `
-                <div class="error-state" role="alert">
-                    <div class="error-icon">⚠️</div>
-                    <div class="error-message">오류 발생</div>
-                    <div class="error-details">${escapeHtml(message)}</div>
-                </div>
-            `;
-        }
-        
-        // ========== ⭐ [업데이트됨] 이미지 Lazy Loading (단순화) ==========
-        
         function initLazyLoading() {
             if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
+                const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            const img = entry.target;
-                            loadImage(img); // 이미지를 로드하는 함수 호출
-                            observer.unobserve(img); // 관찰 중지
+                            loadImage(entry.target);
+                            observer.unobserve(entry.target);
                         }
                     });
-                }, {
-                    rootMargin: '100px 0px', // 뷰포트 100px 전에 미리 로드
-                    threshold: 0.01
-                });
+                }, { rootMargin: '100px' });
                 
-                // MutationObserver는 렌더링 후 새로 추가되는 'data-src' 이미지만 감지
-                const mutationObserver = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        mutation.addedNodes.forEach((node) => {
+                new MutationObserver((mutations) => {
+                    mutations.forEach(mutation => {
+                        mutation.addedNodes.forEach(node => {
                             if (node.nodeType === 1) {
-                                // 'data-src' 속성을 가진 이미지만 찾음
-                                const images = node.querySelectorAll ? 
-                                    node.querySelectorAll('img[data-src]') : 
-                                    (node.tagName === 'IMG' && node.hasAttribute('data-src') ? [node] : []);
-                                
-                                images.forEach(img => imageObserver.observe(img));
+                                const images = node.querySelectorAll?.('img[data-src]') || 
+                                                (node.tagName === 'IMG' && node.hasAttribute('data-src') ? [node] : []);
+                                images.forEach(img => observer.observe(img));
                             }
                         });
                     });
-                });
-                
-                mutationObserver.observe(elements.resultsContainer, {
-                    childList: true,
-                    subtree: true
-                });
-                
-            } else {
-                // 폴백: IntersectionObserver 미지원 시 모든 이미지를 즉시 로드
-                const loadAllImages = () => {
-                    const images = elements.resultsContainer.querySelectorAll('img[data-src]');
-                    images.forEach(img => loadImage(img));
-                };
-                
-                const mutationObserver = new MutationObserver(loadAllImages);
-                mutationObserver.observe(elements.resultsContainer, {
-                    childList: true,
-                    subtree: true
-                });
+                }).observe($.resultsContainer, { childList: true, subtree: true });
             }
         }
         
-        // loadImage 함수는 'data-src'를 'src'로 바꿔주는 역할만 수행
         function loadImage(img) {
             const src = img.getAttribute('data-src');
-            if (!src || img.src) return; 
+            if (!src) return;
             
-            img.classList.add('lazy-loading');
-            
-            const tempImg = new Image();
-            
-            tempImg.onload = function() {
+            const temp = new Image();
+            temp.onload = () => {
                 img.src = src;
-                img.classList.remove('lazy-loading');
-                img.classList.add('loaded');
                 img.removeAttribute('data-src');
             };
-            
-            tempImg.onerror = function() {
-                img.src = 'data:image/svg+xml;charset=UTF-8,%3csvg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"%3e%3crect fill="%23f7fafc" width="600" height="400"/%3e%3ctext x="50%25" y="50%25" text-anchor="middle" fill="%23718096" font-size="16" font-family="sans-serif"%3e이미지를 불러올 수 없습니다%3c/text%3e%3c/svg%3e';
-                img.classList.remove('lazy-loading');
-                img.classList.add('loaded');
-                img.removeAttribute('data-src');
+            temp.onerror = () => {
+                img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f1f5f9" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="%2394a3b8" font-size="14"%3E이미지 로드 실패%3C/text%3E%3C/svg%3E';
             };
-            
-            tempImg.src = src;
+            temp.src = src;
         }
-        
-        // ========== 앱 시작 ==========
         
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
             init();
         }
-        
     })();
     </script>
 </body>
